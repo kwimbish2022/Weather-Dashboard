@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel = "stylesheet" type = "text/css" href = "./assets/styles.css">
+    <title>Weather App</title>
+</head>
+
+<body>
+  <header class = "header">
+    <h1>Weather Dashboard</h1>
+  </header>
+
+  <aside class = "aside">
+    <div class = "search">
+      <div class = "row">
+        <h1>Search for a City:</h1>
+      </div>
+      <form id = "cityForm">
+        <div class = "formEntry">
+          <input type = "text" name = "cityName" placeholder = "Enter City Name" />
+          <button class = "btn" id = "searchBtn" type = "search"><i class = "fas fa-search"></i>
+          </button>
+        </div>
+        <section class = "cityList">
+          <ul class = "pastCityList"></ul>
+        </section>
+      </form>
+    </div>  
+  </aside>
+
+  <container class = "container">
+    <div class = "forecast">
+      <div class = "row">
+        <h1 class = "cityName">City Name</h1>
+        <h1 class = "currentDate"></h1>
+        <img class = "weatherIcon"></img>
+      </div>
+      <div class = "row">
+        <p class = "temp">Temp:</p>
+      </div>
+      <div class = "row">
+        <p class = "wind">Wind:</p>
+      </div>
+      <div class = "row">
+        <p class = "humidity">Humidity:</p>
+      </div>
+      <div class = "row">
+        <p class = "uv">UV Index:</p>
+      </div>
+    </div>
+
+    <div class = "cardContainer">
+      <h1>5-Day Forecast:</h1>
+      <div class = "card-row">
+      </div>
+    </div>
+  </container>
+
+  <script src = "assets/script.js"></script>
+</body>
+</html>
