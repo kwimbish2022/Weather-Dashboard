@@ -3,9 +3,9 @@
 }
 
 :root {
-  --primary: rgb(10, 82, 82);
-  --secondary: rgb(3, 44, 44);
-  --tertiary: rgb(82, 83, 83);
+  --primary: #0a5252;
+  --secondary: #032c2c;
+  --tertiary: #525353;
 }
 
 body {
@@ -14,12 +14,13 @@ body {
 }
 
 button {
-  width: 50px;
-  height: auto;
+  width: 177px;
+  height: 25px;
   background-color: var(--primary);
   border-color: var(--secondary);
   border-radius: 3px;
   transition-duration: .75s;
+  color: #ffffff;
 }
 
 button:hover {
@@ -28,10 +29,141 @@ button:hover {
 
 header {
   width: 100%;
-  height: 90px;
-  color: white;
-  margin-top: 10px;
+  height: 100px;
+  color: #ffffff;
+  margin-top: 25px;
   text-align: center;
-  font-size: 15px;
-  background-color: linear-gradient(to right, var(--primary), var(--secondary));
+  font-size: 25px;
+  background-image: linear-gradient(to right, #525353, #032c2c);
 }
+
+h1, ul, p {
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+header h1 {
+  margin: 0;
+  padding-top: 15px;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  max-width: 500px;
+  height: 100%;
+}
+
+.search {
+  padding: 30px;
+  background-color: #ffffff;
+  font-size: 25px;;
+}
+
+.search h1 {
+  line-height: 35px;
+}
+
+.forecast {
+  margin-top: 30px;
+  margin-left: 30px;
+  border: solid 3px var(--primary);
+  min-width: 650px;
+  padding: 15px;
+  height:75%;
+  font-size: 25px;
+}
+
+.cardContainer {
+  margin-left: 30px;
+  width: 200px;
+  height: auto;
+  border-radius: 3px;
+  color: var(--secondary);
+  font-size: 35px;
+  background-color: #ffffff;
+}
+
+.cardContainer h1 {
+  margin-top: 30px;
+  margin-left: 5%;
+  font-size: 35px;
+}
+
+.cardRow {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--primary);
+}
+
+.five-day-card {
+  margin-left: 60px;
+  width: 175px;
+  height: auto;
+  border-radius: 3px;
+  color: #ffffff;
+  font-size: 25px;
+  background-color: var(--primary);
+}
+
+.five-day-card .card-text {
+  margin-bottom: 15px;
+  padding: 10px 30px 5px 10px;
+}
+
+.cityList {
+  margin-top: 25px;
+}
+
+.cityList:nth-child() {
+  margin-top: 25px;
+}
+
+img {
+  width: auto;
+  height: auto;
+}
+
+input {
+  height: 40px;
+  width: auto;
+}
+
+ul {
+  height: 100%;
+  font-size: 25px;
+  background-color: #ffffff;
+  border: solid 1px var(--tertiary);
+  border-radius: 0px;
+  padding: 12px 5px 12px 5px;
+  list-style: none;
+}
+
+li:first-child {
+  height: 100%;
+  font-size: 25px;
+  background-color: var(--tertiary);
+  border: solid 1px var(--tertiary);
+  border-radius: 5px;
+  padding: 12px 5px 12px 5px;
+  list-style: none;
+}
+
+li:last-child {
+  height: 100%;
+  font-size: 25px;
+  background-color: var(--tertiary);
+  border: solid 1px var(--secondary);
+  border-radius: 0px 0px 5px 5px;
+  padding: 12px 5px 12px 5px;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  line-height: 50%;
+  margin: 5px;
+}
+
+.row * {
+  margin-right: 5px;
+} 
