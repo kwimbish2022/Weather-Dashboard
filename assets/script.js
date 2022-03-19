@@ -34,20 +34,27 @@ $(document).ready(function() {
 });
 
 //Is there existing history or not?
-//if not...just have it say none in the console *AT LOAD*
+//If not...just have it say none in the console *AT LOAD*
 if (JSON.parse(localStorage.getItem("searchHistory")) === null) {
   console.log("none")
-  // if there is...load it to the console and the function that stores the history in the aside.
 }else{
   console.log("searchHistoryArr loaded");
-  //call this to render to the list in the aside...
-  //renderSearchHistory();
+}
+
+function renderWeatherData(cityName, cityTemp, cityHumidity, cityWindSpeed, cityWeatherIcon, uvVal) {
+  cityName.text(cityName)
+  currentDate.text(`(${today})`)
+  temp.text(`Temperature: ${cityTemp} °F`);
+  humi.text(`Humidity: ${cityHumidity}%`);
+  wind.text(`Wind Speed: ${cityWindSpeed} MPH`);
+  uv.text(`UV Index: ${uvVal}`);
+  weatherIcon.attr("src", cityWeatherIcon);
 }
 
 // event listener for search button
 searchBtn.addEventListener("click", getWeather);
 
-// calling api data on click
+// calling api data on click, storing to localStorage, call renderBtns.
 function getWeather(searchedCity) {
   searchedCity.preventDefault()
   var city = document.getElementById("searchInput").value;
@@ -83,9 +90,27 @@ function getWeather(searchedCity) {
         console.log(searchedCity);
         renderBtns(searchedCity);
       }
-    });
+    })
+    .then(function(weatherData) {
+      console.log(weatherData);
+      var cityObj = {
+        cityName: data.name,
+        cityTemp: data.main.temp,
+        cityHumidity: data.main.humidity,
+        cityWindSpeed: data.wind.speed,
+        cityUVIndex: data.coord,
+        cityWeatherIconName: data.weather[0].icon
+      }
+    })
+    .then(function(coord) {
+      return fetch(`https://api.openweathermap.org/data/2.5forecast?lat=${data.coord.lat}&lon=${data.coord.lon}&units=inperial&appid=${apiKey}`)
+    })
+    .then(function(response) {
+      return response.json();
+    })
 }
 
+// Creating city buttons in search history
 function renderBtns(cityArr) {
   $( "#pastCityList").empty();
   console.log('functionToRenderBtns', cityArr);
