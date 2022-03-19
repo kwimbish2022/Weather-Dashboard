@@ -25,7 +25,7 @@
             <button class = "btn" id = "searchBtn" type = "search">Search<i class = "fas fa-search"></i>
             </button>
           </div>
-          <section class = "pastCityList">
+          <section id = "pastCityList">
           </section>
         </form>
       </div>  
@@ -35,7 +35,7 @@
       <div class = "forecast">
         <div class = "row">
           <h1 class = "cityName">City Name</h1>
-          <h1 class = "currentDate"></h1>
+          <h1 id = "currentDate" class = "date"></h1>
           <img class = "weatherIcon"></img>
         </div>
         <div class = "row">
@@ -60,6 +60,8 @@
     </section>
   </div>
 
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script src = "assets/script.js"></script>
 </body>
 </html>

@@ -1,68 +1,55 @@
 // api key
 const apiKey = "af27b186d6260f55ec571432b7737b78";
 
+//date items
+var date = "";
+var dateTime = "";
+
 // form item/button
 var searchBtn = document.getElementById("searchBtn");
+var searchInput = document.getElementsByClassName("searchInput");
 
 // additional aside/form items
-var formEl = document.querySelector("#cityForm");
-var currentDateEl = document.getElementsByClassName("currentDate");
-var searchHistoryEl = document.getElementsByClassName("pastCityList");
-var weatherIconEl = document.getElementsByClassName("weatherIcon");
-var searchbtn = document.getElementById("searchBtn");
+var cityName = document.getElementsByClassName("cityName");
+var currentDate = document.getElementsByClassName("currentDate");
+var searchHistory = document.getElementsByClassName("pastCityList");
+var weatherIcon = document.getElementsByClassName("weatherIcon");
 
 // current city weather items/card items
-var tempEl = document.getElementsByClassName("temp");
-var humidityEl = document.getElementsByClassName("humidity");
-var windEl = document.getElementsByClassName("wind");
-var uvEl = document.getElementsByClassName("uv");
+var temp = document.getElementsByClassName("temp");
+var humi = document.getElementsByClassName("humidity");
+var wind = document.getElementsByClassName("wind");
+var uv = document.getElementsByClassName("uv");
 var cardRow = document.getElementsByClassName("cardRow");
 
-// to create the current date
-var today = new Date();
-var dd = String(today.getDate()).padStart(2, '0');
-var mm = String(today.getMonth() + 1).padStart(2, '0');
-var yyyy = today.getFullYear();
-var today = mm + '/' + dd + '/' + yyyy;
+// to create the current date, borrowed from work-day-scheduler assignment
+var today = function() {
+  date = moment(new Date());
+  dateTime.html(date.format('MMMM Do YYYY'));
+}
+
+$(document).ready(function() {
+  dateTime = $("#currentDate");
+  today();
+});
 
 //Is there existing history or not?
-  //if not...just have it say none in the console at load
+//if not...just have it say none in the console *AT LOAD*
 if (JSON.parse(localStorage.getItem("searchHistory")) === null) {
   console.log("none")
   // if there is...load it to the console and the function that stores the history in the aside.
 }else{
   console.log("searchHistoryArr loaded");
   //call this to render to the list in the aside...
-  renderSearchHistory();
+  //renderSearchHistory();
 }
 
-// To get our search history to renderSearchHistory to the aside (not just console.log).
-function renderSearchHistory(cityName) {
-  searchHistoryEl.empty();
-  // for arr/localStorage  
-  var searchHistoryArr = JSON.parse(localStorage.getItem("searchHistory"));
-  for (let i = 0; i < searchHistoryArr.length; i ++) {
-    // had to put new search item into loop, it wasn't adding new search to list(just overwriting)
-    var newSearchItem = $("<li>").attr("class", "cityHistory");
-    // list of prev searched cities into aside li
-    newSearchItem.text(searchHistoryArr[i]);
-    searchHistoryEl.prepend(newSearchItem);
-  }
-}
+// event listener for search button
+searchBtn.addEventListener("click", getWeather);
 
-// To get our needed data items for the weather data in assignment parameters (name, temp, hum, wind, icon, uv)
-function renderWeatherInfo(cityName, cityTemp, cityHumidity, cityWindSpeed, cityWeatherIcon, uvValue) {
-  cityNameEl.text(cityName);
-  currentDateEl.text(`(${today})`);
-  tempEl.text(`Temperature: ${cityTemp} °F`);
-  humidityEl.text(`Humidity: ${cityHumidity} %`);
-  windSpeedEl.text(`Wind Speed: ${cityWindSpeed} MPH`);
-  uvIndexEl.text(`src`, cityWeatherIcon);
-}
-
-// calling api data
-function getWeather(e) {
-  e.preventDefault()
+// calling api data on click
+function getWeather(searchedCity) {
+  searchedCity.preventDefault()
   var city = document.getElementById("searchInput").value;
   console.log(city);
   fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`)
@@ -70,10 +57,49 @@ function getWeather(e) {
       return res.json();
     })
     .then(function(data) {
-    //   renderSearchHistory();
       console.log(data);
+      var cityToSave = {
+        name: data.name,
+        lat: data.coord.lat,
+        lon: data.coord.lon,
+      }
+      console.log(cityToSave);
+      var historyToCheck = localStorage.getItem("searchHistory");
+      console.log(historyToCheck);
+      var historyCheck = JSON.parse(historyToCheck);
+      console.log(historyCheck);
+      if (historyCheck === null) {
+        var arrayToSave = [cityToSave];
+        var arrayToString = JSON.stringify(arrayToSave);
+        console.log(arrayToString);
+        localStorage.setItem('searchHistory', arrayToString);
+        console.log(localStorage.getItem('searchHistory'));
+        renderBtns(arrayToSave);
+      }else{
+        console.log('historyExists');
+        var searchedCity = JSON.parse(localStorage.getItem('searchHistory'));
+        searchedCity.unshift(cityToSave);
+        localStorage.setItem('searchHistory', JSON.stringify(searchedCity));
+        console.log(searchedCity);
+        renderBtns(searchedCity);
+      }
     });
 }
 
-// event listener for search button
-searchbtn.addEventListener("click", getWeather);
+function renderBtns(cityArr) {
+  $( "#pastCityList").empty();
+  console.log('functionToRenderBtns', cityArr);
+  for (let index = 0; index < cityArr.length; index++) {
+    const element = cityArr[index];
+    console.log(element);
+    var test = $(`<button>${element.name}</button>`).click(function () {
+      console.log('test');
+    });
+  $('#pastCityList').append(test);
+  }
+  // create button, contains city name, long/lat attribute
+  //event listener/click for each
+  //create for loop that creates button with this info in an array from local storage
+  // how to not search an already searched name, if === true, if false add to array
+}
+
