@@ -22,6 +22,9 @@ var wind = document.getElementsByClassName("wind");
 var uv = document.getElementsByClassName("uv");
 var cardRow = document.getElementsByClassName("cardRow");
 
+// future forecast
+var futureForecast = document.querySelector("forecast");
+
 // to create the current date, borrowed from work-day-scheduler assignment
 var today = function() {
   date = moment(new Date());
@@ -39,16 +42,6 @@ if (JSON.parse(localStorage.getItem("searchHistory")) === null) {
   console.log("none")
 }else{
   console.log("searchHistoryArr loaded");
-}
-
-function renderWeatherData(cityName, cityTemp, cityHumidity, cityWindSpeed, cityWeatherIcon, uvVal) {
-  cityName.text(cityName)
-  currentDate.text(`(${today})`)
-  temp.text(`Temperature: ${cityTemp} °F`);
-  humi.text(`Humidity: ${cityHumidity}%`);
-  wind.text(`Wind Speed: ${cityWindSpeed} MPH`);
-  uv.text(`UV Index: ${uvVal}`);
-  weatherIcon.attr("src", cityWeatherIcon);
 }
 
 // event listener for search button
@@ -89,24 +82,8 @@ function getWeather(searchedCity) {
         localStorage.setItem('searchHistory', JSON.stringify(searchedCity));
         console.log(searchedCity);
         renderBtns(searchedCity);
+        uvIndex(data.coord.lat, data.coord.lon);
       }
-    })
-    .then(function(weatherData) {
-      console.log(weatherData);
-      var cityObj = {
-        cityName: data.name,
-        cityTemp: data.main.temp,
-        cityHumidity: data.main.humidity,
-        cityWindSpeed: data.wind.speed,
-        cityUVIndex: data.coord,
-        cityWeatherIconName: data.weather[0].icon
-      }
-    })
-    .then(function(coord) {
-      return fetch(`https://api.openweathermap.org/data/2.5forecast?lat=${data.coord.lat}&lon=${data.coord.lon}&units=inperial&appid=${apiKey}`)
-    })
-    .then(function(response) {
-      return response.json();
     })
 }
 
@@ -127,4 +104,43 @@ function renderBtns(cityArr) {
   //create for loop that creates button with this info in an array from local storage
   // how to not search an already searched name, if === true, if false add to array
 }
+
+function uvIndex(lat, lon) {
+var fiveDayFore = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+    fetch(fiveDayFore)
+    .then(function(response) {
+      return response.json();
+    })
+    console.log()
+    .then(function(data) {
+      futureForecast.innerHTML = ''
+      console.log(data);
+      var main = document.querySelector('.weatherInfo');
+      var index = document.createElement('div');
+      var uv =`UV Index: ${data.current.uvi}`;
+      index.innerHTML = uv;
+      main.appendChild(index);
+
+      for (var i = 0; i < data.daily.length; i++)
+      if (i <= 5 && i > 0) {
+        var p = document.createElement('p');
+        var upcoming = `
+        <img src="http://openweathermap.org/img/w/${data.daily[i].weather[0].icon}.png"/>
+        <p>
+        Temp: ${Math.round(data.daily[i].temp.day)} °F
+        </p>
+        <p>
+        Wind: ${data.daily[i].wind_speed} MPH
+        </p>
+        <p>
+        Humidity: ${data.daily[i].humidity}%
+        </p>
+        `;
+        p.innerHTML = upcoming;
+        futureForecast.appendChild(p);
+      }
+    });
+}
+// grr. Why isn't this working?!?!
+
 
