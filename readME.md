@@ -7,6 +7,7 @@ A weather dashboard that shows current weather, five day forecast, and local sto
 * HTML 
 * CSS
 * jQuery
+* openweathermap.org API
 
 ## Website
 https://kwimbish2022.github.io/weather-dashboard/
